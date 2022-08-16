@@ -1,0 +1,72 @@
+#multable
+
+declare
+n number;
+i number;
+begin
+n:=&n;
+for i in 1..10 LOOP
+DBMS_output.PUT_LINE(n||'*'||i||'='||n*i);
+END LOOP;
+end;
+/
+
+output:
+SQL> @C:\Users\y20cs170\Documents\plsql\multab.sql;
+Enter value for n: 6
+old   5: n:=&n;
+new   5: n:=6;
+6*1=6
+6*2=12
+6*3=18
+6*4=24
+6*5=30
+6*6=36
+6*7=42
+6*8=48
+6*9=54
+6*10=60
+
+#palindrome
+declare
+n number;
+s number;
+rev number:=0;
+begin
+n:=&n;
+s:=n;
+while n>0 loop
+rev:=rev*10+mod(n,10);
+n:=trunc(n/10);
+end loop;
+if rev=s then
+DBMS_output.PUT_LINE('given'||s||'is palindrome rev is'||rev);
+else
+DBMS_output.PUT_LINE('given'||s||'is  not palindrome rev is'||rev);
+end if;
+end;
+/
+
+
+
+#fibnocci
+
+declare
+f number:=0;
+s number:=1;
+n number;
+i number;
+fib number;
+begin
+n:=&n;
+DBMS_output.PUT_LINE(f);
+DBMS_output.PUT_LINE(s);
+for i in 1..n-2
+loop
+fib:=f+s;
+f:=s;
+s:=fib;
+DBMS_output.PUT_LINE(fib);
+end loop;
+end;
+/
