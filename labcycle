@@ -1,0 +1,57 @@
+6th question
+
+
+declare
+qua int;
+begin
+select Quantity into qua
+from Inventory 
+where Product_ID=2;
+if qua>0 then
+update Inventory set Quantity=qua-1 where Product_ID=2;
+insert into Purchase_Record values(1,'purchased','8/30/2022');
+else
+insert into Purchase_Record values(1,'out of stock','8/30/2022');
+end if;
+end;
+/
+
+
+SQL> @C:\Users\y20cs170\Documents\plsql\6.sql;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from Inventory;
+
+PRODUCT_ID PRODUCT_NAME           QUANTITY
+---------- -------------------- ----------
+         1 p1                           79
+         2 p2                          -10
+         3 P3                            0
+         4 P4                            5
+
+SQL> select * from Purchase_Record;
+
+PRODUCT_ID STATUS               DAT
+---------- -------------------- --------------------
+         1 purchased            8/30/2022
+
+SQL> @C:\Users\y20cs170\Documents\plsql\6.sql;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from Inventory;
+
+PRODUCT_ID PRODUCT_NAME           QUANTITY
+---------- -------------------- ----------
+         1 p1                           79
+         2 p2                          -10
+         3 P3                            0
+         4 P4                            5
+
+SQL>  select * from Purchase_Record;
+
+PRODUCT_ID STATUS               DAT
+---------- -------------------- --------------------
+         1 purchased            8/30/2022
+         1 out of stock         8/30/2022
