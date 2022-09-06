@@ -1,0 +1,263 @@
+7th question
+
+
+declare
+hra number;
+da number;
+pf number;
+pt number;
+bp number;
+gross number;
+netsal number;
+name varchar(10);
+no number:=1;
+begin
+select basicpay into bp
+from employee
+where eno=1;
+select ename into name
+from employee
+where eno=1; 
+hra:=(15*bp)/100;
+da:=(62*bp)/100;
+gross:=bp+hra+da;
+if gross>8000 then
+pf:=780;
+else
+pf:=600;
+end if;
+pt:=(2*bp)/100;
+netsal:=gross-pf-pt;
+DBMS_OUTPUT.PUT_LINE('no:'||no);
+DBMS_OUTPUT.PUT_LINE('name:'||name);
+DBMS_OUTPUT.PUT_LINE('hra:'||hra);
+DBMS_OUTPUT.PUT_LINE('da:'||da);
+DBMS_OUTPUT.PUT_LINE('pf:'||pf);
+DBMS_OUTPUT.PUT_LINE('pt:'||pt);
+DBMS_OUTPUT.PUT_LINE('gross:'||gross);
+DBMS_OUTPUT.PUT_LINE('netsal:'||netsal);
+end;
+/
+
+
+output:
+
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------
+ ENO                                                NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ BASICPAY                                           NUMBER(38)
+
+SQL> select * from employee;
+
+       ENO ENAME                  BASICPAY
+---------- -------------------- ----------
+         1 sravanthi                 50000
+         2 keerthi                   60000
+         3 divya                     70000
+SQL> set serveroutput on;
+SQL>  @C:\Users\y20cs170\Documents\plsql\7.sql;
+no:1
+name:sravanthi
+hra:7500
+da:31000
+pf:780
+pt:1000
+gross:88500
+netsal:86720
+
+
+
+8th question
+
+
+declare
+p number;
+d date;
+begin
+select count(*) into p from emp1 where dno=80;
+delete from emp1 where dno=80;
+select sysdate into d from dual;
+insert into del_history values(80,P,d);
+end;
+/
+
+
+output:
+
+  1  create table emp1(empid int,
+  2  name varchar(10),
+  3  salary int,
+  4* dno int)
+SQL> /
+
+Table created.
+
+SQL> create table del_history(dno int,
+  2  rows_deleted int,
+  3  dat date);
+
+Table created.
+
+SQL> insert into emp1 values(1,sravanthi,50000,70);
+insert into emp1 values(1,sravanthi,50000,70)
+                          *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* insert into emp1 values(1,'sravanthi',50000,70)
+SQL> /
+
+1 row created.
+
+SQL> insert into emp1 values(2,'keerthi',60000,80);
+
+1 row created.
+
+SQL> insert into emp1 values(3,'divya',70000,80);
+
+1 row created.
+
+SQL> select * from emp1;
+
+     EMPID NAME           SALARY        DNO
+---------- ---------- ---------- ----------
+         1 sravanthi       50000         70
+         2 keerthi         60000         80
+         3 divya           70000         80
+SQL> @C:\Users\y20cs170\Documents\plsql\8.sql;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp1;
+
+     EMPID NAME           SALARY        DNO
+---------- ---------- ---------- ----------
+         1 sravanthi       50000         70
+
+SQL> select * from de_history;
+select * from de_history
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* select * from del_history
+SQL> /
+
+       DNO ROWS_DELETED DAT
+---------- ------------ ---------
+        80            2 06-SEP-22
+        
+        
+9th question
+
+declare 
+cursor s1 is select name,salary from employee1 order by salary desc;
+cursor s2 is select name,salary from employee1 order by salary asc;
+n number:=0;
+begin
+for i in s1
+loop
+if s1%rowcount<=5 then
+n:=n+1;
+dbms_output.put_line(n||'highest:'||i.name||':'||i.salary);
+end if;
+end loop;
+n:=0;
+for i in s2
+loop
+if s2%rowcount<=5 then
+n:=n+1;
+dbms_output.put_line(n||'lowset:'||i.name||':'||i.salary);
+end if;
+end loop;
+end;
+/
+
+output:
+SQL> select * from employee1;
+
+     EMPNO NAME           SALARY DESIGNATIO     DEPTID
+---------- ---------- ---------- ---------- ----------
+         1 name1             500 engineer           90
+         2 name2            1000 manager            80
+         3 name3             700 employee           90
+         4 name4             400 employee2          60
+         5 name5             890 employee3          40
+         6 name6             900 emp                80
+         7 name7             720 emp5               70
+         8 name8             420 emp6               10
+         9 name9             300 emp7              120
+        10 name10            680 emp10              20
+        11 name11           1200 emp90              49
+
+     EMPNO NAME           SALARY DESIGNATIO     DEPTID
+---------- ---------- ---------- ---------- ----------
+        12 name12           1400 emp80              13
+
+12 rows selected.
+SQL> @C:\Users\y20cs170\Documents\plsql\9.sql;
+Input truncated to 1 characters
+1highest:name12:1400
+2highest:name11:1200
+3highest:name2:1000
+4highest:name6:900
+5highest:name5:890
+1lowset:name9:300
+2lowset:name4:400
+3lowset:name8:420
+4lowset:name1:500
+5lowset:name10:680
+
+PL/SQL procedure successfully completed.
+
+10th question
+
+declare 
+cursor s1 is select * from bank_trans;
+begin
+for i in s1
+loop
+if i.trtype='w' then
+update bank_main set curbal=curbal-i.tramt where accno=i.accno;
+update bank_trans set updflag='y' where accno=i.accno;
+update bank_trans set tramt=0 where accno=i.accno;
+else
+update bank_main set curbal=curbal+i.tramt where accno=i.accno;
+update bank_trans set updflag='y' where accno=i.accno;
+update bank_trans set tramt=0 where accno=i.accno;
+end if;
+end loop;
+end;
+/
+
+output:
+
+SQL> @C:\Users\y20cs170\Documents\plsql\10.sql;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from bank_trans;
+
+     ACCNO TRTYPE     TRDATE         TRAMT UPDFLAG
+---------- ---------- --------- ---------- ----------
+       300 d          20-SEP-22          0 y
+       400 w          07-JUL-22          0 y
+
+SQL> select * from bank_main;
+
+     ACCNO NAME       ADDRESS                        ACCTYPE        CURBAL
+---------- ---------- ------------------------------ ---------- ----------
+       200 sravanthi  kakarla                        s                9000
+       300 divya      kadapa                         s                8700
+       400 keerthi    guntur                         s                 600
