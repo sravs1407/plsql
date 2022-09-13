@@ -1,0 +1,81 @@
+11th question
+
+
+declare
+temp varchar(20);
+begin
+select name into temp from emp1 where dno=80;
+exception
+when no_data_found then
+dbms_output.put_line('no data found error');
+when too_many_rows then
+dbms_output.put_line('too many rows error');
+when zero_divide then
+dbms_output.put_line('zero divide error');
+end;
+/
+
+output:
+
+SQL> @C:\Users\y20cs170\Documents\plsql\11.sql;
+Input truncated to 1 characters
+too many rows error
+
+PL/SQL procedure successfully completed.
+
+
+12th question
+
+
+declare
+neg_qua exception; 
+quan number;
+begin
+select quantity into quan from inventory where product_id=2;
+if quan<0 then
+raise neg_qua;
+end if;
+exception
+when neg_qua then
+dbms_output.put_line('invalid quantity');
+update inventory set quantity=0 where product_id=2;
+end;
+
+/
+
+
+output
+
+
+SQL> select * from inventory;
+
+PRODUCT_ID PRODUCT_NAME           QUANTITY
+---------- -------------------- ----------
+         1 p1                           79
+         2 p2                          -10
+         3 P3                            0
+         4 P4                            5
+
+SQL> @C:\Users\y20cs170\Documents\plsql\12.sql;
+update emp1 set quantity=0 where product_id=2;
+                *
+ERROR at line 12:
+ORA-06550: line 12, column 17:
+PLS-00417: unable to resolve "QUANTITY" as a column
+ORA-06550: line 12, column 1:
+PL/SQL: SQL Statement ignored
+
+
+SQL> @C:\Users\y20cs170\Documents\plsql\12.sql;
+invalid quantity
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from inventory;
+
+PRODUCT_ID PRODUCT_NAME           QUANTITY
+---------- -------------------- ----------
+         1 p1                           79
+         2 p2                            0
+         3 P3                            0
+         4 P4                            5
