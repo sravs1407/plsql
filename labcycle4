@@ -1,0 +1,65 @@
+2nd question
+
+
+function:
+create or replace function total_sal(n number) return number is
+s number;
+begin
+select sum(sal) into s from department1 where deptno=n;
+return s;
+end;
+/
+calling function
+declare
+n number;
+begin
+n:=total_sal(80);
+dbms_output.put_line(n);
+end;
+/
+output:
+
+SQL> select * from department1;
+
+    DEPTNO NAME                        SAL
+---------- -------------------- ----------
+        10 sravanthi                 10000
+        80 divya                     40000
+        80 keerthi                   30000
+
+SQL> @C:\Users\y20cs170\Documents\plsql\2(4).sql;
+
+Function created.
+SQL> @C:\Users\y20cs170\Documents\plsql\2(4)1.sql;
+Input truncated to 1 characters
+70000
+
+PL/SQL procedure successfully completed.
+
+3rd question
+
+
+
+create or replace function inc(n number)return number is
+s number;
+p number;
+begin
+select basicpay into p from employee where eno=n;
+if p<=3000 then
+s:=0.3*p;
+elsif p>3000 and p<=6000 then
+s:=0.2*p;
+else
+s:=0.1*p;
+end if;
+return s;
+end;
+/
+
+output
+
+SQL>  @C:\Users\y20cs170\Documents\plsql\3(4).sql;
+Input truncated to 1 characters
+
+Function created.
+
