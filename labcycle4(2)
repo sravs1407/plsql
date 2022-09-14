@@ -1,0 +1,78 @@
+1st question
+
+declare
+null_val exception;
+cursor s1 is select eno,basicpay from employee;
+a number;
+begin
+for i in s1
+loop
+if i.basicpay=null then
+raise null_val;
+else
+a:=inc(i.eno);
+update employee set basicpay=i.basicpay+a where eno=i.eno;
+end if;
+end loop;
+EXCEPTION
+when null_val then
+dbms_output.put_line('value is null');
+end;
+/
+
+output:
+
+SQL> @C:\Users\y20cs170\Documents\plsql\1(4).sql;
+Input truncated to 1 characters
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from employee;
+
+       ENO ENAME                  BASICPAY
+---------- -------------------- ----------
+         1 sravanthi                 55000
+         2 keerthi                   66000
+         3 divya                     77000
+
+
+4th question
+
+
+function
+
+create or replace function e return varchar is
+s varchar(10);
+cursor p is select name,gs,com from emptab;
+begin
+for i in p
+loop
+dbms_output.put_line(i.name||12*(i.gs+i.com));
+end loop;
+s:=null;
+return s;
+end;
+/
+
+calling function
+declare
+p number;
+begin
+p:=e;
+dbms_output.put_line(p);
+end;
+/
+
+output:
+SQL> select * from emptab;
+
+        ID NAME                         GS        COM
+---------- -------------------- ---------- ----------
+         1 sravanthi                  3000        100
+         2 keerthi                    5000        400
+         3 divya                      9000         50
+ SQL> @C:\Users\y20cs170\Documents\plsql\4(2)4.sql;
+Input truncated to 1 characters
+sravanthi37200
+keerthi64800
+divya108600
